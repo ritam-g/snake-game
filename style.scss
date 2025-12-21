@@ -16,6 +16,9 @@ html, body {
     --classic:rgb(230, 229, 229);
     //! padding
     --primaty-padding:2rem;
+    //! SNAKE COLOR
+    --snake-color:rgb(170, 79, 79); 
+    --border-color:black;
 
 }
 @mixin fullscreen{
@@ -49,16 +52,21 @@ main{
         height: 90vh;
         border: 1px solid var(--primary);
         display: grid;
-        grid-template-columns: repeat(auto-fit,minmax(30px,1fr));
-        grid-template-rows: repeat(auto-fit,minmax(30px,1fr));
+        grid-template-columns: repeat(auto-fit,minmax(50px,1fr));
+        grid-template-rows: repeat(auto-fit,minmax(50px,1fr));
         overflow: hidden;
         
         .block{
-            background-color: var(--secendary);
-            height: 28px;
-            width: 28px;
+            // background-color: var(--secendary);
+            height: 48px;
+            width: 48px;
             border: 1px solid var(--classic);
             font-size: 0.8rem;
+            color: var(--classic);
+        }
+        .snake{
+            background-color: var(--snake-color);
+            
         }
 
     }
