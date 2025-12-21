@@ -55,4 +55,5 @@ main .board .block {
   height: 28px;
   width: 28px;
   border: 1px solid var(--classic);
+  font-size: 0.8rem;
 }/*# sourceMappingURL=style.css.map */
