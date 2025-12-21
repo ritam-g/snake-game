@@ -17,6 +17,7 @@ html, body {
   --primaty-padding:2rem;
   --snake-color:rgb(170, 79, 79);
   --border-color:black;
+  --food-color:green;
 }
 
 main {
@@ -52,6 +53,9 @@ main .board {
   grid-template-rows: repeat(auto-fit, minmax(50px, 1fr));
   overflow: hidden;
 }
+main .board .food {
+  background-color: var(--food-color);
+}
 main .board .block {
   height: 48px;
   width: 48px;
@@ -61,4 +65,36 @@ main .board .block {
 }
 main .board .snake {
   background-color: var(--snake-color);
+}
+main .gameBox {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  visibility: visible;
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+}
+main .gameBox h2 {
+  color: var(--classic);
+}
+main .gameBox button {
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: var(--secendary);
+  color: var(--primary);
+}
+main .gameBox button:hover {
+  background-color: var(--classic);
+}
+main .gameBox p {
+  color: var(--classic);
 }/*# sourceMappingURL=style.css.map */

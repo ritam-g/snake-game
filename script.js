@@ -1,5 +1,6 @@
 let board = document.querySelector(".board");
-
+let gameBox=document.querySelector(".gameBox")
+let  gamebutton=document.querySelector(".gameBox button#startBtn")
 let blockHeight = 50;
 let blockWidth = 50;
 
@@ -11,8 +12,10 @@ let blocks = [];
 // Snake positions
 let snake = [
     { row: 1, col: 3 },
-
 ];
+let food=[
+    {row:Math.floor(Math.random()*boardRowSize),col:Math.floor(Math.random()*boardColSize)}
+]
 // Create board
 for (let row = 0; row < boardRowSize; row++) {
     for (let col = 0; col < boardColSize; col++) {
@@ -22,21 +25,15 @@ for (let row = 0; row < boardRowSize; row++) {
         blocks[`${row},${col}`] = block;
     }
 }
-// Draw snake
-function drawSnake() {
-    snake.forEach(({ row, col }) => {
-        blocks[`${row},${col}`].classList.add("snake");
-    });
-}
 
 //! USER-DIRECTION
 let userDirection = "right"
-
-drawSnake();
-let playGame=setInterval(() => {
-
+// Draw snake
+function drawSnake() {
+    
     let headOfSnake = null;
-
+    //randomly place food
+    blocks[`${food[0].row},${food[0].col}`].classList.add("food");
     if (userDirection === "left") {
         headOfSnake = { row: snake[0].row, col: snake[0].col - 1 };
     }
@@ -57,21 +54,37 @@ let playGame=setInterval(() => {
         headOfSnake.row >= boardRowSize ||
         headOfSnake.col >= boardColSize
     ) {
-        alert("Game Over");
         
+        gameBox.style.visibility="visible"
+             
         clearInterval(playGame)
+        return
         
     }
+    if(headOfSnake.row===food[0].row && headOfSnake.col===food[0].col){
+        blocks[`${food[0].row},${food[0].col}`].classList.remove("food")
+        //! new food location 
+        food[0]={row:Math.floor(Math.random()*boardRowSize),col:Math.floor(Math.random()*boardColSize)}
+        blocks[`${food[0].row},${food[0].col}`].classList.add("food");
+        //i want add the length
+        snake.unshift(headOfSnake);
+        // alert("Yummy")
+        //! i want the color will go from the food 
 
+    }
     snake.forEach(({ row, col }) => {
         blocks[`${row},${col}`].classList.remove("snake");
     });
 
     snake.unshift(headOfSnake);
     snake.pop();
-    drawSnake();
+    snake.forEach(({ row, col }) => {
+        blocks[`${row},${col}`].classList.add("snake");
+    });
+}
 
-}, 500);
+drawSnake();
+
 document.addEventListener("keydown", (event) => {
     if (event.key === "ArrowUp") {
         userDirection = "up"
@@ -93,6 +106,16 @@ document.addEventListener("keydown", (event) => {
         alert("gameover")
     }
 });
+function btnClick() {
+    gamebutton.addEventListener("click",()=>{
+    gameBox.style.visibility="hidden"
+    let playGame=setInterval(() => {
+        drawSnake();
 
+    }, 500);
+    
+})
+}
+btnClick()
 
 

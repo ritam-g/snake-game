@@ -19,6 +19,8 @@ html, body {
     //! SNAKE COLOR
     --snake-color:rgb(170, 79, 79); 
     --border-color:black;
+    //! food color
+    --food-color:green; 
 
 }
 @mixin fullscreen{
@@ -55,7 +57,9 @@ main{
         grid-template-columns: repeat(auto-fit,minmax(50px,1fr));
         grid-template-rows: repeat(auto-fit,minmax(50px,1fr));
         overflow: hidden;
-        
+        .food{
+            background-color: var(--food-color);
+        }
         .block{
             // background-color: var(--secendary);
             height: 48px;
@@ -69,5 +73,35 @@ main{
             
         }
 
+    }
+    .gameBox{
+        @include fullscreen();
+        position: absolute;
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        visibility: visible;
+        backdrop-filter: blur(4px);
+        h2{
+            color: var(--classic);
+        }
+        button{
+            padding: 0.5rem 1rem;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: var(--secendary);
+            color: var(--primary);
+            &:hover{
+                background-color: var(--classic);
+            }
+        }
+        p{
+            color: var(--classic);
+        }
     }
 }
