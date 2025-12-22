@@ -1,35 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
     <main>
         <div class="infos">
-            <div class="info">
-                <div class="info"><h3>High Score : </h3> <span id="HS">0</span></div>
-            </div>
-            
-            <div class="info">
-                <div class="info"><h3>Score : </h3> <span id="S">0</span></div>
-            </div>
-            <div class="info">
-                <div class="info"><h3>Time : </h3> <span id="T">00-00</span></div>
-            </div>
-            
+            <div class="info">High Score : <span id="HS">0</span></div>
+            <div class="info">Score : <span id="S">0</span></div>
+            <div class="info">Time : <span id="T">00:00</span></div>
         </div>
-        <div class="board">
-            
-        </div>
+
+        <div class="board"></div>
+
+        <!-- GAME OVER / START BOX -->
         <div class="gameBox">
-            <h2>Welcome to the Snake Game</h2>
+            <h2>🐍 Snake Game</h2>
             <button id="startBtn">Start Game</button>
-            <p>Use Arrow Keys to move the snake</p>
+            <p>Use Arrow Keys</p>
         </div>
     </main>
-    <script type="module" src="script.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>

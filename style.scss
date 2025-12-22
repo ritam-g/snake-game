@@ -7,101 +7,121 @@
 html, body {
   width: 100%;
   height: 100%;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Courier New', monospace;
+  background: radial-gradient(circle, #1a1a1a, #000);
 }
 
-:root{
-    --primary:rgb(32, 29, 29);
-    --secendary:gray;
-    --classic:rgb(230, 229, 229);
-    //! padding
-    --primaty-padding:2rem;
-    //! SNAKE COLOR
-    --snake-color:rgb(170, 79, 79); 
-    --border-color:black;
-    //! food color
-    --food-color:green; 
-
+/* VARIABLES */
+:root {
+  --primary: #0f0f0f;
+  --classic: #e6e6e6;
+  --snake: #ff6b6b;
+  --food: #4cd137;
+  --glass: rgba(255, 255, 255, 0.08);
 }
-@mixin fullscreen{
-    height: 100%;
-    width: 100%;
-}
-main{
-    @include fullscreen();
-    background-color: var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: var(--primaty-padding)  ;
-    padding: var(--primaty-padding)  var(--primaty-padding)  ;
-    .infos{
-        width: 100%;
-        height: 10vh;
-        display: flex;
-        border: 2px solid var(--classic);
-        justify-content: space-around;
-        .info{
-            display: flex;
-            color: var(--classic);
-            align-items: center;
-            justify-content: center;
-        }
-    }
-    .board{
-        width: 100%;
-        height: 90vh;
-        border: 1px solid var(--primary);
-        display: grid;
-        grid-template-columns: repeat(auto-fit,minmax(50px,1fr));
-        grid-template-rows: repeat(auto-fit,minmax(50px,1fr));
-        overflow: hidden;
-        .food{
-            background-color: var(--food-color);
-        }
-        .block{
-            // background-color: var(--secendary);
-            height: 48px;
-            width: 48px;
-            border: 1px solid var(--classic);
-            font-size: 0.8rem;
-            color: var(--classic);
-        }
-        .snake{
-            background-color: var(--snake-color);
-            
-        }
 
-    }
-    .gameBox{
-        @include fullscreen();
-        position: absolute;
-        position: fixed;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        visibility: visible;
-        backdrop-filter: blur(4px);
-        h2{
-            color: var(--classic);
-        }
-        button{
-            padding: 0.5rem 1rem;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: var(--secendary);
-            color: var(--primary);
-            &:hover{
-                background-color: var(--classic);
-            }
-        }
-        p{
-            color: var(--classic);
-        }
-    }
+main {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* INFO BAR */
+.infos {
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem;
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  color: var(--classic);
+  box-shadow: 0 0 20px rgba(0,0,0,.6);
+}
+
+.info span {
+  color: var(--food);
+  font-weight: bold;
+}
+
+/* BOARD */
+.board {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(50px, 1fr));
+  border-radius: 16px;
+  overflow: hidden;
+  background: #111;
+  box-shadow: inset 0 0 40px rgba(0,0,0,.8);
+}
+
+/* BLOCK */
+.block {
+  border: 1px solid #222;
+  transition: background 0.2s ease;
+}
+
+/* SNAKE */
+.snake {
+  background: var(--snake);
+  border-radius: 50%;
+  animation: snakeMove 0.15s linear;
+  box-shadow: 0 0 10px var(--snake);
+}
+
+@keyframes snakeMove {
+  from { transform: scale(0.7); }
+  to { transform: scale(1); }
+}
+
+/* FOOD */
+.food {
+  background: var(--food);
+  border-radius: 50%;
+  animation: pulse 1s infinite;
+  box-shadow: 0 0 12px var(--food);
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(0.8); }
+}
+
+/* GAME BOX */
+.gameBox {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(6px);
+  color: var(--classic);
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.gameBox button {
+  padding: 0.6rem 1.4rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: var(--food);
+  color: #000;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.gameBox button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px var(--food);
 }

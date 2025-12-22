@@ -1,121 +1,135 @@
-let board = document.querySelector(".board");
-let gameBox=document.querySelector(".gameBox")
-let  gamebutton=document.querySelector(".gameBox button#startBtn")
-let blockHeight = 50;
-let blockWidth = 50;
+const board = document.querySelector(".board");
+const gameBox = document.querySelector(".gameBox");
+const startBtn = document.querySelector("#startBtn");
 
-let boardColSize = Math.floor(board.clientWidth / blockWidth);
-let boardRowSize = Math.floor(board.clientHeight / blockHeight);
+const scoreEl = document.querySelector("#S");
+const highScoreEl = document.querySelector("#HS");
+const timeEl = document.querySelector("#T");
 
-let blocks = [];
+// ---------------- SCORE ----------------
+let score = 0;
+let highScore = Number(localStorage.getItem("highScore")) || 0;
+highScoreEl.textContent = highScore;
 
-// Snake positions
-let snake = [
-    { row: 1, col: 3 },
-];
-let food=[
-    {row:Math.floor(Math.random()*boardRowSize),col:Math.floor(Math.random()*boardColSize)}
-]
-// Create board
-for (let row = 0; row < boardRowSize; row++) {
-    for (let col = 0; col < boardColSize; col++) {
-        let block = document.createElement("div");
-        block.classList.add("block");
-        board.appendChild(block);
-        blocks[`${row},${col}`] = block;
-    }
+// ---------------- TIME ----------------
+let min = 0, sec = 0;
+let timerInterval = null;
+
+// ---------------- BOARD ----------------
+const blockSize = 50;
+const rows = Math.floor(board.clientHeight / blockSize);
+const cols = Math.floor(board.clientWidth / blockSize);
+const blocks = {};
+let gameInterval = null;
+
+// ---------------- SNAKE ----------------
+let snake = [{ row: 1, col: 3 }];
+let direction = "right";
+
+// ---------------- FOOD ----------------
+let food = randomFood();
+
+// ---------------- CREATE GRID ----------------
+for (let r = 0; r < rows; r++) {
+  for (let c = 0; c < cols; c++) {
+    const div = document.createElement("div");
+    div.className = "block";
+    board.appendChild(div);
+    blocks[`${r},${c}`] = div;
+  }
 }
 
-//! USER-DIRECTION
-let userDirection = "right"
-// Draw snake
-function drawSnake() {
-    
-    let headOfSnake = null;
-    //randomly place food
-    blocks[`${food[0].row},${food[0].col}`].classList.add("food");
-    if (userDirection === "left") {
-        headOfSnake = { row: snake[0].row, col: snake[0].col - 1 };
-    }
-    else if (userDirection === "right") {
-        headOfSnake = { row: snake[0].row, col: snake[0].col + 1 };
-    }
-    if (userDirection === "up") {
-        headOfSnake = { row: snake[0].row - 1, col: snake[0].col };
-    }
-    else if (userDirection === "down") {
-        headOfSnake = { row: snake[0].row + 1, col: snake[0].col };
+// ---------------- FUNCTIONS ----------------
+function randomFood() {
+  return {
+    row: Math.floor(Math.random() * rows),
+    col: Math.floor(Math.random() * cols),
+  };
+}
+
+function drawGame() {
+  let head = { ...snake[0] };
+
+  if (direction === "left") head.col--;
+  if (direction === "right") head.col++;
+  if (direction === "up") head.row--;
+  if (direction === "down") head.row++;
+
+  // GAME OVER
+  if (
+    head.row < 0 || head.col < 0 ||
+    head.row >= rows || head.col >= cols
+  ) {
+    endGame();
+    return;
+  }
+
+  // FOOD
+  blocks[`${food.row},${food.col}`].classList.add("food");
+
+  if (head.row === food.row && head.col === food.col) {
+    score += 10;
+    scoreEl.textContent = score;
+
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem("highScore", highScore);
+      highScoreEl.textContent = highScore;
     }
 
-    // ✅ GAME OVER CHECK (correct place)
-    if (
-        headOfSnake.row < 0 ||
-        headOfSnake.col < 0 ||
-        headOfSnake.row >= boardRowSize ||
-        headOfSnake.col >= boardColSize
-    ) {
-        
-        gameBox.style.visibility="visible"
-             
-        clearInterval(playGame)
-        return
-        
-    }
-    if(headOfSnake.row===food[0].row && headOfSnake.col===food[0].col){
-        blocks[`${food[0].row},${food[0].col}`].classList.remove("food")
-        //! new food location 
-        food[0]={row:Math.floor(Math.random()*boardRowSize),col:Math.floor(Math.random()*boardColSize)}
-        blocks[`${food[0].row},${food[0].col}`].classList.add("food");
-        //i want add the length
-        snake.unshift(headOfSnake);
-        // alert("Yummy")
-        //! i want the color will go from the food 
-
-    }
-    snake.forEach(({ row, col }) => {
-        blocks[`${row},${col}`].classList.remove("snake");
-    });
-
-    snake.unshift(headOfSnake);
+    blocks[`${food.row},${food.col}`].classList.remove("food");
+    food = randomFood();
+    snake.unshift(head);
+  } else {
     snake.pop();
-    snake.forEach(({ row, col }) => {
-        blocks[`${row},${col}`].classList.add("snake");
-    });
+    snake.unshift(head);
+  }
+
+  document.querySelectorAll(".snake").forEach(b => b.classList.remove("snake"));
+  snake.forEach(p => blocks[`${p.row},${p.col}`].classList.add("snake"));
 }
 
-drawSnake();
+function startTimer() {
+  timerInterval = setInterval(() => {
+    sec++;
+    if (sec === 60) { sec = 0; min++; }
+    timeEl.textContent =
+      `${String(min).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
+  }, 1000);
+}
 
-document.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowUp") {
-        userDirection = "up"
+function endGame() {
+  clearInterval(gameInterval);
+  clearInterval(timerInterval);
+  gameBox.style.visibility = "visible";
+}
 
-    }
-
-    else if (event.key === "ArrowDown") {
-        userDirection = "down"
-    }
-
-    if (event.key === "ArrowLeft") {
-        userDirection = "left"
-    }
-
-    if (event.key === "ArrowRight") {
-        userDirection = "right"
-    }
-    if (headOfSnake.row<0||headOfSnake.col<0) {
-        alert("gameover")
-    }
+// ---------------- CONTROLS ----------------
+document.addEventListener("keydown", e => {
+  if (e.key.includes("Arrow")) direction = e.key.replace("Arrow","").toLowerCase();
 });
-function btnClick() {
-    gamebutton.addEventListener("click",()=>{
-    gameBox.style.visibility="hidden"
-    let playGame=setInterval(() => {
-        drawSnake();
 
-    }, 500);
-    
-})
-}
-btnClick()
+// ---------------- START ----------------
+startBtn.addEventListener("click", () => {
+  gameBox.style.visibility = "hidden";
 
+  snake = [{ row: 1, col: 3 }];
+  direction = "right";
+  score = 0;
+  min = sec = 0;
 
+  scoreEl.textContent = 0;
+  timeEl.textContent = "00:00";
+
+  document.querySelectorAll(".snake,.food").forEach(b =>
+    b.classList.remove("snake","food")
+  );
+
+  food = randomFood();
+
+  clearInterval(gameInterval);
+  clearInterval(timerInterval);
+
+  startTimer();
+  gameInterval = setInterval(drawGame, 160);
+});

@@ -7,94 +7,136 @@
 html, body {
   width: 100%;
   height: 100%;
-  font-family: "Courier New", Courier, monospace;
+  font-family: "Courier New", monospace;
+  background: radial-gradient(circle, #1a1a1a, #000);
 }
 
+/* VARIABLES */
 :root {
-  --primary:rgb(32, 29, 29);
-  --secendary:gray;
-  --classic:rgb(230, 229, 229);
-  --primaty-padding:2rem;
-  --snake-color:rgb(170, 79, 79);
-  --border-color:black;
-  --food-color:green;
+  --primary: #0f0f0f;
+  --classic: #e6e6e6;
+  --snake: #ff6b6b;
+  --food: #4cd137;
+  --glass: rgba(255, 255, 255, 0.08);
 }
 
 main {
   height: 100%;
-  width: 100%;
-  background-color: var(--primary);
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-  gap: var(--primaty-padding);
-  padding: var(--primaty-padding) var(--primaty-padding);
+  gap: 1rem;
+  padding: 1rem;
 }
-main .infos {
-  width: 100%;
-  height: 10vh;
+
+/* INFO BAR */
+.infos {
   display: flex;
-  border: 2px solid var(--classic);
   justify-content: space-around;
-}
-main .infos .info {
-  display: flex;
+  padding: 1rem;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  border-radius: 12px;
   color: var(--classic);
-  align-items: center;
-  justify-content: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
 }
-main .board {
-  width: 100%;
-  height: 90vh;
-  border: 1px solid var(--primary);
+
+.info span {
+  color: var(--food);
+  font-weight: bold;
+}
+
+/* BOARD */
+.board {
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
   grid-template-rows: repeat(auto-fit, minmax(50px, 1fr));
+  border-radius: 16px;
   overflow: hidden;
+  background: #111;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
 }
-main .board .food {
-  background-color: var(--food-color);
+
+/* BLOCK */
+.block {
+  border: 1px solid #222;
+  transition: background 0.2s ease;
 }
-main .board .block {
-  height: 48px;
-  width: 48px;
-  border: 1px solid var(--classic);
-  font-size: 0.8rem;
-  color: var(--classic);
+
+/* SNAKE */
+.snake {
+  background: var(--snake);
+  border-radius: 50%;
+  animation: snakeMove 0.15s linear;
+  box-shadow: 0 0 10px var(--snake);
 }
-main .board .snake {
-  background-color: var(--snake-color);
+
+@keyframes snakeMove {
+  from {
+    transform: scale(0.7);
+  }
+  to {
+    transform: scale(1);
+  }
 }
-main .gameBox {
-  height: 100%;
-  width: 100%;
-  position: absolute;
+/* FOOD */
+.food {
+  background: var(--food);
+  border-radius: 50%;
+  animation: pulse 1s infinite;
+  box-shadow: 0 0 12px var(--food);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(0.8);
+  }
+}
+/* GAME BOX */
+.gameBox {
   position: fixed;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   gap: 1rem;
-  visibility: visible;
-  -webkit-backdrop-filter: blur(4px);
-          backdrop-filter: blur(4px);
-}
-main .gameBox h2 {
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
   color: var(--classic);
+  animation: fadeIn 0.4s ease;
 }
-main .gameBox button {
-  padding: 0.5rem 1rem;
-  font-size: 1.2rem;
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.gameBox button {
+  padding: 0.6rem 1.4rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
-  background-color: var(--secendary);
-  color: var(--primary);
+  background: var(--food);
+  color: #000;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-main .gameBox button:hover {
-  background-color: var(--classic);
-}
-main .gameBox p {
-  color: var(--classic);
+
+.gameBox button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px var(--food);
 }/*# sourceMappingURL=style.css.map */
