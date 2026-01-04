@@ -9,9 +9,9 @@ const speed=200;
 // ---------------- AUDIO SETUP ----------------
 // Define the Audio objects. Use .cloneNode() before playing if the sound 
 // needs to be retriggered quickly (e.g., eating food).
-const welcomeSound = new Audio("./public/sound/welcome.mp3"); // Sound when game starts/user enters
-const eatSound = new Audio("./public/sound/eat.mp3");         // Sound when snake eats food
-const gameOverSound = new Audio("./public/sound/gameOver.mp3"); // Sound when game ends
+const welcomeSound = new Audio("./sound/welcome.mp3"); // Sound when game starts/user enters
+const eatSound = new Audio("./sound/eat.mp3");         // Sound when snake eats food
+const gameOverSound = new Audio("./sound/gameOver.mp3"); // Sound when game ends
 
 // Optional: Pre-load sounds to minimize delay on first play
 welcomeSound.load();
